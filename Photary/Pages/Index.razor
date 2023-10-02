@@ -1,8 +1,36 @@
 ﻿@page "/"
 
 <PageTitle>Index</PageTitle>
+<div class="h-100 d-flex flex-column">
+    <div class="header">
 
-<h1>Hello, world!</h1>
+    </div>
+    <div class="main-content m-auto">
+    </div>
+    <div class="menu">
+        <div class="menu-content">
+            <button class="btn btn-menu" @onclick="(() => MenuButtonOnClick(0))">
+                <ButtonIcon Type="0" IsSelected="selectedMenu[0]"></ButtonIcon>
+            </button>
+            <button class="btn btn-menu" @onclick="(() => MenuButtonOnClick(1))">
+                <ButtonIcon Type="1" IsSelected="selectedMenu[1]"></ButtonIcon>
+            </button>
+            <button class="btn btn-menu" @onclick="(() => MenuButtonOnClick(2))">
+                <ButtonIcon Type="2" IsSelected="selectedMenu[2]"></ButtonIcon>
+            </button>
+        </div>
+    </div>
+</div>
+@code{
+    private bool[] selectedMenu = new bool[3] { true, false, false };
 
-Welcome to your new app.
-
+    private void MenuButtonOnClick(int type)
+    {
+        for (int i = 0; i < selectedMenu.Length; i++)
+        {
+            selectedMenu[i] = false;
+        }
+        selectedMenu[type] = true;
+        StateHasChanged();
+    }
+}

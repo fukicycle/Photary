@@ -1,0 +1,31 @@
+﻿.header {
+    height: 80px;
+    border-bottom: 1px solid #656C65;
+    background: #1E201E;
+}
+
+.main-content {
+    flex: 1;
+    max-width: 500px;
+}
+
+.menu {
+    height: 92px;
+    border-top: 1px solid #656C65;
+    background: #1E201E;
+}
+
+.menu-content {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 190px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-menu {
+    margin-left: 35px;
+    margin-right: 35px;
+    outline: none;
+}
