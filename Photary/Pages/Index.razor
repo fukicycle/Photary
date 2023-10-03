@@ -1,4 +1,7 @@
 ﻿@page "/"
+@inject Blazored.LocalStorage.ILocalStorageService _localStorage
+@inject NavigationManager _navigationManager
+@inject HttpClient _client
 
 <PageTitle>Index</PageTitle>
 <div class="h-100 d-flex flex-column">
@@ -6,6 +9,7 @@
 
     </div>
     <div class="main-content m-auto">
+        @test
     </div>
     <div class="menu">
         <div class="menu-content">
@@ -23,6 +27,25 @@
 </div>
 @code{
     private bool[] selectedMenu = new bool[3] { true, false, false };
+    private string? test = "test";
+
+    protected override async Task OnInitializedAsync()
+    {
+        string? token = await _localStorage.GetItemAsStringAsync("TOKEN");
+        if (string.IsNullOrEmpty(token))
+        {
+            _navigationManager.NavigateTo("login");
+            return;
+        }
+        _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+        HttpResponseMessage res = await _client.GetAsync("Users");
+        if (res.IsSuccessStatusCode)
+        {
+            UserResponseDto? user = await res.Content.ReadFromJsonAsync<UserResponseDto>();
+            test = user?.NickName;
+            StateHasChanged();
+        }
+    }
 
     private void MenuButtonOnClick(int type)
     {

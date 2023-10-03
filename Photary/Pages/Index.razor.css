@@ -28,5 +28,5 @@
 .btn-menu {
     margin-left: 35px;
     margin-right: 35px;
-    outline: none;
+    outline: none !important;
 }

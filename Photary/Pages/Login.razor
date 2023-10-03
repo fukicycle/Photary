@@ -1,0 +1,35 @@
+﻿@page "/login"
+@inject Blazored.LocalStorage.ILocalStorageService _localStorage
+@inject NavigationManager _navigationManager
+@inject HttpClient _client
+<div>
+    <div>
+        <input type="text" @bind="Username" />
+    </div>
+    <div>
+        <input type="password" @bind="Password" />
+    </div>
+    <button @onclick="LoginButtonOnClick">Login</button>
+</div>
+@code {
+    private string Username = null!;
+    private string Password = null!;
+
+    private async void LoginButtonOnClick()
+    {
+        if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password)) return;
+        LoginDto loginDto = new LoginDto { Username = Username, Password = Password };
+        HttpResponseMessage res = await _client.PostAsJsonAsync<LoginDto>("Login", loginDto);
+        if (res.IsSuccessStatusCode)
+        {
+            LoginResponseDto? loginResponseDto = await res.Content.ReadFromJsonAsync<LoginResponseDto>();
+            if (loginResponseDto is not null)
+            {
+                await _localStorage.SetItemAsStringAsync("TOKEN", loginResponseDto.Token);
+                await Task.Delay(500);
+                _navigationManager.NavigateTo(_navigationManager.BaseUri);
+            }
+        }
+    }
+}
+
