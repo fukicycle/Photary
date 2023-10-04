@@ -1,0 +1,65 @@
+﻿.btn-action {
+    background-color: transparent;
+    outline: none;
+}
+
+.btn-area {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 150px;
+    margin: auto;
+}
+
+.login-area {
+    max-width: 300px;
+    width: 100%;
+    padding: .5rem;
+}
+
+
+.input-icons > div {
+    position: relative;
+    height: 60px;
+}
+
+.input-icons {
+    width: 100%;
+    margin-bottom: 10px;
+    height: 120px;
+    margin-top: 30px;
+}
+
+.icon {
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    margin: 7px 4px;
+}
+
+.input-field {
+    color: #E7E9E7;
+    z-index: 90;
+    outline: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid #656C65;
+    background: #1B1D1B;
+}
+
+.title {
+    color: #E7E9E7;
+}
+
+.img-icon {
+    width: 150px;
+    object-fit: cover;
+    height: 150px;
+    border-radius: 75px;
+    object-position: center;
+}
