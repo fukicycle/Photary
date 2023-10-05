@@ -1,4 +1,6 @@
-﻿<div class="p-3 w-100 h-100">
+﻿@inject NavigationManager _navigationManager
+@inject HttpClient _client
+<div class="p-3 w-100 h-100">
     <div class="content-area w-100 h-100">
         <div class="w-100 d-flex flex-column h-100">
             <div class="fs-2 text-center">@today.ToString("yyyy年MM月dd日(ddd)")</div>
@@ -18,15 +20,113 @@
                 </div>
             </div>
             <div class="px-2 py-3 input-wrapper">
-                <textarea class="input-field" maxlength="200"></textarea>
+                <textarea class="input-field" maxlength="200" @bind="@content" disabled="@(diary is not null)"></textarea>
             </div>
-            <button class="btn-save">保存</button>
+            @if (diary is null)
+            {
+                <button class="btn-save" disabled="@(content is null)" @onclick="SaveButtonOnClick">保存</button>
+            }
+            else
+            {
+                <div class="d-inline btn-save">記入済み</div>
+            }
         </div>
     </div>
 </div>
+@if (error is not null)
+{
+    <div class="error-field">@error</div>
+}
 @code {
+    [Parameter]
+    public string Token { get; set; } = null!;
     private DateTime today = DateTime.Today;
     private bool hasImage = false;
+    private string? content = null;
+    private string? error = null;
+    private Timer Timer = new Timer(3000);
+    private DiaryResponseDto? diary = null;
 
+    protected override async Task OnInitializedAsync()
+    {
+        Timer.Elapsed += (s, e) =>
+        {
+            error = null;
+            Timer.Stop();
+            StateHasChanged();
+        };
+        string? key = _client.DefaultRequestHeaders.FirstOrDefault(a => a.Key.Equals("Authorization")).Key;
+        if (key is not null) _client.DefaultRequestHeaders.Remove(key);
+        _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Token}");
+        HttpResponseMessage res = await _client.GetAsync("Diaries/today");
+        if (res.IsSuccessStatusCode)
+        {
+            DiaryResponseDto? diaryResponseDto = await res.Content.ReadFromJsonAsync<DiaryResponseDto>();
+            if (diaryResponseDto is null)
+            {
+                error = "Failed desirialize response.";
+                Timer.Start();
+            }
+            else
+            {
+                diary = diaryResponseDto;
+                content = diary.Content;
+            }
+            StateHasChanged();
+        }
+        else if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            _navigationManager.NavigateTo("login");
+            return;
+        }
+        else if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            //no action
+        }
+        else
+        {
+            error = "Unexpected error has occured.";
+
+        }
+    }
+
+    private async Task SaveButtonOnClick()
+    {
+        if (content is null) return;
+        DiaryDto diaryDto = new DiaryDto
+        {
+            Content = content
+        };
+        HttpContent httpContent = new StringContent(System.Text.Json.JsonSerializer.Serialize(diaryDto), System.Text.Encoding.UTF8, "application/json");
+        string? key = _client.DefaultRequestHeaders.FirstOrDefault(a => a.Key.Equals("Authorization")).Key;
+        if (key is not null) _client.DefaultRequestHeaders.Remove(key);
+        _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Token}");
+        HttpResponseMessage res = await _client.PostAsync("Diaries", httpContent);
+        if (res.IsSuccessStatusCode)
+        {
+            DiaryResponseDto? diaryResponseDto = await res.Content.ReadFromJsonAsync<DiaryResponseDto>();
+            if (diaryResponseDto is null)
+            {
+                error = "Failed desirialize response.";
+                Timer.Start();
+            }
+            else
+            {
+                diary = diaryResponseDto;
+                content = diary.Content;
+            }
+            StateHasChanged();
+        }
+        else if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            _navigationManager.NavigateTo("login");
+            return;
+        }
+        else
+        {
+            error = "Unexpected error has occured.";
+            Timer.Start();
+        }
+    }
 }
 

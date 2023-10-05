@@ -13,7 +13,7 @@
         @switch (selectedIndex)
         {
             case 0:
-                <Create></Create>
+                <Create Token="@token"></Create>
                 break;
             default:
                 <div>頑張って作成中...</div>
@@ -38,6 +38,7 @@
     private bool[] selectedMenu = new bool[3] { false, true, false };
     private string? test = "test";
     private int selectedIndex = 1;
+    private string token = null!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -47,6 +48,7 @@
             _navigationManager.NavigateTo("login");
             return;
         }
+        this.token = token;
         _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
         HttpResponseMessage res = await _client.GetAsync("Users");
         if (res.IsSuccessStatusCode)
