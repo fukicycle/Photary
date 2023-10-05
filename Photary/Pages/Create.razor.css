@@ -1,0 +1,45 @@
+﻿.img-area {
+    width: 100%;
+    aspect-ratio: 1/1;
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1E201E;
+}
+
+.content-area {
+    display: flex;
+    justify-content: center;
+}
+
+.input-field {
+    color: #E7E9E7;
+    padding: 10px;
+    resize: none;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    background: #1E201E;
+    outline: none;
+    border: none;
+}
+
+.input-wrapper {
+    flex: 1;
+}
+
+.btn-save {
+    outline: none;
+    border: solid 1px #C9F943;
+    color: #C9F943;
+    background-color: transparent;
+    padding: 5px 20px;
+    border-radius: 10px;
+    margin: auto;
+}
+    .btn-save:hover {
+        color: #1B1D1B;
+        background-color: #C9F943;
+    }

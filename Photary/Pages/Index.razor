@@ -5,11 +5,20 @@
 
 <PageTitle>Index</PageTitle>
 <div class="h-100 d-flex flex-column">
-    <div class="header">
+    @*
+        <div class="header">
 
-    </div>
-    <div class="main-content m-auto">
-        @test
+            </div>*@
+    <div class="main-content m-auto w-100 h-100">
+        @switch (selectedIndex)
+        {
+            case 0:
+                <Create></Create>
+                break;
+            default:
+                <div>頑張って作成中...</div>
+                break;
+        }
     </div>
     <div class="menu">
         <div class="menu-content">
@@ -26,8 +35,9 @@
     </div>
 </div>
 @code{
-    private bool[] selectedMenu = new bool[3] { true, false, false };
+    private bool[] selectedMenu = new bool[3] { false, true, false };
     private string? test = "test";
+    private int selectedIndex = 1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -54,6 +64,7 @@
             selectedMenu[i] = false;
         }
         selectedMenu[type] = true;
+        selectedIndex = type;
         StateHasChanged();
     }
 }
