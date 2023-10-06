@@ -9,6 +9,13 @@
     background: #1E201E;
 }
 
+    .img-area > img {
+        width: 100%;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
 .content-area {
     display: flex;
     justify-content: center;
@@ -39,6 +46,7 @@
     border-radius: 10px;
     margin: auto;
 }
+
     .btn-save:hover {
         color: #1B1D1B;
         background-color: #C9F943;
