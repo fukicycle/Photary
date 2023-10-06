@@ -7,9 +7,9 @@
             <div class="fs-4">絵日記</div>
             <div class="img-wrapper px-5 py-2">
                 <div class="img-area">
-                    @if (hasImage)
+                    @if (diary?.ImagePath is not null)
                     {
-                        <img alt="genereted by ai" />
+                        <img src="@diary.ImagePath" alt="genereted by ai" />
                     }
                     else
                     {
@@ -41,7 +41,6 @@
     [Parameter]
     public string Token { get; set; } = null!;
     private DateTime today = DateTime.Today;
-    private bool hasImage = false;
     private string? content = null;
     private string? error = null;
     private Timer Timer = new Timer(3000);
@@ -71,7 +70,6 @@
             {
                 diary = diaryResponseDto;
                 content = diary.Content;
-                hasImage = diaryResponseDto.ImagePath is not null;
             }
             StateHasChanged();
         }
@@ -115,7 +113,6 @@
             {
                 diary = diaryResponseDto;
                 content = diary.Content;
-                hasImage = diaryResponseDto.ImagePath is not null;
             }
             StateHasChanged();
         }
