@@ -71,6 +71,7 @@
             {
                 diary = diaryResponseDto;
                 content = diary.Content;
+                hasImage = diaryResponseDto.ImagePath is not null;
             }
             StateHasChanged();
         }
@@ -114,6 +115,7 @@
             {
                 diary = diaryResponseDto;
                 content = diary.Content;
+                hasImage = diaryResponseDto.ImagePath is not null;
             }
             StateHasChanged();
         }
