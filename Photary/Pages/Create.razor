@@ -3,7 +3,7 @@
 <div class="p-3 w-100 h-100">
     <div class="content-area w-100 h-100">
         <div class="w-100 d-flex flex-column h-100">
-            <div class="fs-2 text-center">@today.ToString("yyyy年MM月dd日(ddd)")</div>
+            <div class="fs-2 text-center">@((diary?.Date ?? today).ToString("yyyy年MM月dd日(ddd)"))</div>
             <div class="fs-4">絵日記</div>
             <div class="img-wrapper px-5 py-2">
                 <div class="img-area">
@@ -14,7 +14,7 @@
                     else
                     {
                         <div class="fs-6 text-center">
-                            @today.AddDays(1).ToString("MM/dd(ddd)")7時に公開!
+                            @((diary?.Date ?? today).AddDays(1).ToString("MM/dd(ddd)"))7時に公開!
                         </div>
                     }
                 </div>
